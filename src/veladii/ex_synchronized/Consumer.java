@@ -7,12 +7,15 @@ public class Consumer extends Thread {
 
     private Buffer buffer;
 
-    public Consumer(Buffer buffer){
-        this.buffer=buffer;
+    public Consumer(Buffer buffer) {
+        this.buffer = buffer;
     }
 
     @Override
     public void run() {
-
+        for (int i = 0; i < 10; i++) {
+            int bufferNumber = buffer.get();
+            System.out.println("Consumator a primit : " + bufferNumber);
+        }
     }
 }

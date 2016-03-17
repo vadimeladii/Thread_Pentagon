@@ -1,52 +1,66 @@
 package veladii;
 
+import org.omg.CORBA.TIMEOUT;
+import veladii.beep.Beeper;
+import veladii.ex_synchronized.Buffer;
+import veladii.ex_synchronized.Consumer;
+import veladii.ex_synchronized.Producer;
+import veladii.timer.Alarm;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.util.*;
 
 /**
  * Created by veladii on 3/16/16.
  */
 public class Main {
     public static void main(String[] args) {
-       /* List<Integer> integerList=new ArrayList<>();
-        integerList.add(3);
-        integerList.add(10);
-        integerList.add(1);
-        integerList.add(5);
+        executBeeper();
+    }
 
-        Sort sort=new Sort(integerList);
-        Thread thread=new Thread(sort);
-        boolean alive = thread.isAlive();
-        thread.start();
-        alive=thread.isAlive();
-        for(int i=0;i<20;i++){
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println(i);
-        }
-*/
-     /*   Beeper beeper=new Beeper();
-        boolean daemon = beeper.isDaemon();
+    public static void executBeeper(){
+        Beeper beeper=new Beeper();
+        ThreadGroup threadGroup = beeper.getThreadGroup();
+        String name = threadGroup.getName();
         beeper.setDaemon(true);
-        daemon=beeper.isDaemon();
         beeper.start();
 
-        beeper.setPriority(3);
+        System.out.println("....");
 
-
-        System.out.println("introuduce enter");
         try {
             System.in.read();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("programul sa inchis");*/
+    }
+
+    public static void executBuffer(){
+        Buffer buffer = new Buffer();
+        Producer producer = new Producer(buffer);
+        Consumer consumer = new Consumer(buffer);
+        producer.start();
+        consumer.start();
+    }
+
+    public static void executTimer(){
+        Timer timer=new Timer();
+        timer.scheduleAtFixedRate(new Alarm("vadim"),0,1*1000);
+
+
+        Calendar calendar=Calendar.getInstance();
+        calendar.set(Calendar.HOUR,5);
+        calendar.set(Calendar.MINUTE,47);
+        calendar.set(Calendar.SECOND,0);
+        Date date=calendar.getTime();
+        System.out.println(date);
 
 
 
+        Timer time=new Timer();
+        time.schedule(new Alarm("CULCAREA"),date);
     }
 }

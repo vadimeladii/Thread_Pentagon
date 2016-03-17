@@ -5,13 +5,30 @@ package veladii.ex_synchronized;
  */
 public class Buffer {
 
-    private int number;
-
-    public int getNumber(){
-        return number;
+    private int number = -1;
+    private boolean available = false ;
+    public synchronized int get () {
+        while (! available ) {
+            try {
+                wait () ;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        available = false ;
+        notifyAll () ;
+        return number ;
     }
-
-    public void putNumber(int number){
-         this.number=number;
+    public synchronized void put ( int number ) {
+        while ( available ) {
+            try {
+                wait () ;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        this . number = number ;
+        available = true ;
+        notifyAll () ;
     }
 }
